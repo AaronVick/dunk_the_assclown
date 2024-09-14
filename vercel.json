@@ -4,6 +4,10 @@
     {
       "src": "pages/api/**/*.ts",
       "use": "@vercel/node"
+    },
+    {
+      "src": "pages/**/*.tsx",
+      "use": "@vercel/next"
     }
   ],
   "env": {
