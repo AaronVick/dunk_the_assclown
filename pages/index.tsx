@@ -9,7 +9,7 @@ export default function HomePage() {
     setLoading(true);
     try {
       // Simulate wallet transaction and redirect to the Throw page
-      // Handle wallet transaction here (mocked for now)
+      // Handle wallet transaction here (mocked for now) ?
       await new Promise(resolve => setTimeout(resolve, 1000));
       router.push('/throw');
     } catch (error) {
