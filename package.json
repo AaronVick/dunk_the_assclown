@@ -1,25 +1,25 @@
 {
-  "name": "dunk-the-assclown",
+  "name": "dunk_the_assclown",
   "version": "1.0.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
   "dependencies": {
+    "next": "^14.2.6",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "firebase-admin": "^11.8.0",
     "@farcaster/core": "^0.11.1",
     "@neynar/nodejs-sdk": "^1.50.0",
     "@vercel/og": "latest",
-    "axios": "^0.21.4",
-    "firebase-admin": "^11.8.0",
-    "next": "^14.2.6",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "axios": "^0.21.4"
   },
   "devDependencies": {
     "typescript": "^4.7.4",
     "@types/react": "^18.0.21",
     "@types/node": "^16.0.0"
-  },
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
   },
   "engines": {
     "node": ">=20.0.0"

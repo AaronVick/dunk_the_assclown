@@ -1,15 +1,5 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "pages/api/**/*.ts",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "pages/**/*.tsx",
-      "use": "@vercel/next"
-    }
-  ],
   "env": {
     "FIREBASE_PROJECT_ID": "FIREBASE_PROJECT_ID",
     "FIREBASE_PRIVATE_KEY_ID": "FIREBASE_PRIVATE_KEY_ID",
