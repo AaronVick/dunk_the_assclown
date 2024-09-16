@@ -1,36 +1,34 @@
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
 
-export default function NotDunkedPage({ attemptsLeft = 0 }) {
+export default function NotDunked() {
   const router = useRouter();
 
-  useEffect(() => {
-    console.log('Player missed the dunk. Remaining attempts:', attemptsLeft);
-  }, [attemptsLeft]);
+  const shareText = encodeURIComponent('I tried but couldn\'t dunk the clown. Can you do it?');
+  const shareLink = `https://warpcast.com/~/compose?text=${shareText}&embeds[]=${encodeURIComponent(process.env.NEXT_PUBLIC_BASE_URL)}`;
 
-  const handleThrowAgain = async () => {
-    try {
-      console.log(`Attempting another throw. Attempts left: ${attemptsLeft}`);
-      if (attemptsLeft > 0) {
-        router.push('/throw');
-      } else {
-        console.log('No attempts left. Navigating to game over.');
-        router.push('/game-over');
-      }
-    } catch (error) {
-      console.error('Error navigating to next attempt:', error);
-      alert('An error occurred. Please try again.');
-    }
+  const handleLog = (action: string) => {
+    console.log(`Action performed: ${action}`);
   };
 
   return (
-    <div style={{ textAlign: 'center' }}>
-      <img src="/notdunked.jpeg" alt="Not Dunked" style={{ maxWidth: '100%' }} />
-      <div style={{ marginTop: '20px' }}>
-        <button onClick={handleThrowAgain}>
-          {attemptsLeft > 0 ? `Throw Again (${attemptsLeft} left)` : 'Game Over'}
-        </button>
-      </div>
+    <div>
+      <h1>Too Bad! You Couldn't Dunk the Clown</h1>
+      <button
+        onClick={() => {
+          handleLog('Try Again');
+          router.push('/');
+        }}
+      >
+        Try Again
+      </button>
+      <button
+        onClick={() => {
+          handleLog('Share on Farcaster');
+          window.location.href = shareLink;
+        }}
+      >
+        Share on Farcaster
+      </button>
     </div>
   );
 }

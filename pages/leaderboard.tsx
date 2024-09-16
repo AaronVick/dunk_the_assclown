@@ -1,57 +1,34 @@
-import { Frog } from 'frog';
-import { handle } from 'frog/vercel';
-import { ref, get, query, orderByChild } from 'firebase/database';
-import { db } from '../src/firebaseConfig';
+import { useEffect, useState } from 'react';
+import { db } from '../src/firebaseConfig'; // Assuming you're using Firestore
 
-const app = new Frog();
+export default function Leaderboard() {
+  const [leaderboard, setLeaderboard] = useState<any[]>([]);
 
-// Function to fetch and calculate the top players from gameSessions
-const fetchLeaderboard = async () => {
-  const sessionsRef = ref(db, 'gameSessions');  // Firebase reference to gameSessions
-  const snapshot = await get(sessionsRef);  // Retrieve all game sessions
-
-  const playerScores: { [playerId: string]: number } = {};
-
-  // Iterate through the sessions and calculate cumulative scores
-  snapshot.forEach((childSnapshot) => {
-    const session = childSnapshot.val();
-    const { playerId, dunksMade } = session;
-
-    if (!playerScores[playerId]) {
-      playerScores[playerId] = 0;
+  const fetchLeaderboard = async () => {
+    try {
+      const snapshot = await db.collection('leaderboard').get();
+      const data = snapshot.docs.map((doc) => doc.data());
+      setLeaderboard(data);
+      console.log('Fetched leaderboard:', data);
+    } catch (error) {
+      console.error('Error fetching leaderboard:', error);
     }
+  };
 
-    playerScores[playerId] += dunksMade;  // Aggregate the successful dunks for each player
-  });
+  useEffect(() => {
+    fetchLeaderboard();
+  }, []);
 
-  // Convert playerScores object to an array and sort by highest scores
-  const sortedScores = Object.keys(playerScores)
-    .map((playerId) => ({ playerId, score: playerScores[playerId] }))
-    .sort((a, b) => b.score - a.score)  // Sort descending by score
-    .slice(0, 10);  // Limit to top 10 players
-
-  return sortedScores;
-};
-
-app.frame('/leaderboard', async (c) => {
-  const leaderboard = await fetchLeaderboard();  // Fetch the top players
-
-  return c.res({
-    image: (
-      <div>
-        <h2>Leaderboard</h2>
+  return (
+    <div>
+      <h1>Leaderboard</h1>
+      <ul>
         {leaderboard.map((player, index) => (
-          <div key={index}>
-            <p>{player.playerId}: {player.score} dunks</p>
-          </div>
+          <li key={index}>
+            {player.name}: {player.score} Dunks
+          </li>
         ))}
-      </div>
-    ),
-    intents: [
-      <button onClick={() => c.redirect('/')}>Go Back</button>,
-    ],
-  });
-});
-
-export const GET = handle(app);
-export const POST = handle(app);
+      </ul>
+    </div>
+  );
+}

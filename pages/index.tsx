@@ -1,31 +1,34 @@
-import { useState } from 'react';
 import { useRouter } from 'next/router';
 
-export default function HomePage() {
-  const [loading, setLoading] = useState(false);
+export default function Index() {
   const router = useRouter();
 
-  const startGame = async () => {
-    setLoading(true);
-    try {
-      // Simulate wallet transaction and redirect to the Throw page
-      // Handle wallet transaction here (mocked for now) ?
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      router.push('/throw');
-    } catch (error) {
-      console.error('Transaction failed', error);
-      setLoading(false);
-    }
+  const shareText = encodeURIComponent('Get ready to dunk the clown in Dunk the Assclown!');
+  const shareLink = `https://warpcast.com/~/compose?text=${shareText}&embeds[]=${encodeURIComponent(process.env.NEXT_PUBLIC_BASE_URL)}`;
+
+  const logAction = (action: string) => {
+    console.log(`Action performed: ${action}`);
   };
 
   return (
-    <div style={{ textAlign: 'center' }}>
-      <img src="/dunk_splash.jpeg" alt="Dunk the Assclown" style={{ maxWidth: '100%' }} />
-      <div style={{ marginTop: '20px' }}>
-        <button onClick={startGame} disabled={loading}>
-          {loading ? 'Processing...' : 'Play Now'}
-        </button>
-      </div>
+    <div>
+      <h1>Welcome to Dunk the Assclown!</h1>
+      <button
+        onClick={() => {
+          logAction('Start Playing');
+          router.push('/play');
+        }}
+      >
+        Start Playing
+      </button>
+      <button
+        onClick={() => {
+          logAction('Share on Farcaster');
+          window.location.href = shareLink;
+        }}
+      >
+        Share on Farcaster
+      </button>
     </div>
   );
 }
